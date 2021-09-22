@@ -6,7 +6,7 @@ autoextend on next 5M
 maxsize 20M
 extent management local;
 
-drop tablespace TS_ZEI;
+drop tablespace TS_ZEI including contents;
 
 --Задание 2. Табличное пространство для временных данных
 create temporary tablespace TS_ZEI_TEMP
@@ -16,23 +16,25 @@ autoextend on next 3M
 maxsize 30M
 extent management local;
 
+drop tablespace TS_ZEI_TEMP;
+
 --Задание 3. Получите список всех табличных пространств, списки всех файлов с помощью select-запроса к словарю.
 select TABLESPACE_NAME from SYS.DBA_TABLESPACES;
 
 select FILE_NAME, TABLESPACE_NAME FROM DBA_DATA_FILES;
 select FILE_NAME, TABLESPACE_NAME FROM DBA_TEMP_FILES;
 
+
 --Задание 4.  Создайте роль с именем RL_XXXCORE. Назначьте ей следующие системные привилегии:
 --разрешение на соединение с сервером;
 --разрешение создавать и удалять таблицы, представления, процедуры и функции
 
---&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&удалять все????
-alter session set "_ORACLE_SCRIPT"=true;
+alter session set "_ORACLE_SCRIPT" = true;
 create role RL_ZEICORE;
-grant create session, 
-      create table, 
-      create view, 
-      create procedure
+grant create session,
+      create table,  drop any table,
+      create view,   drop any view,
+      create procedure, drop any procedure 
       to RL_ZEICORE;
     
 drop role RL_ZEICORE;
@@ -51,10 +53,9 @@ create profile PF_ZEICORE limit
     password_reuse_time 7 --через сколько дней можно повторить пароль
     password_grace_time default --количество дней предупреждений о смене пароля
     connect_time 90 --время соединения, минут
-    idle_time 25 --количество минут простоя
+    idle_time 25; --количество минут простоя
     
-drop profile PF_ZEICORE;
-    
+ 
 --Задание 7. Получите список всех профилей БД. Получите значения всех параметров профиля PF_XXXCORE.
 --Получите значения всех параметров профиля DEFAULT.
 select distinct profile from dba_profiles;
@@ -74,11 +75,11 @@ profile PF_ZEICORE
 account unlock
 password expire
 
+
 --Задание 9. Соединитесь с сервером Oracle с помощью sqlplus и введите новый пароль для пользователя XXXCORE.  
 grant RL_ZEICORE to ZEICORE
 
 --sqlplus "connect as sysdba"
---masterkey
 --alter user ZEICORE identified by 1234;
 
 
@@ -92,11 +93,13 @@ grant RL_ZEICORE to ZEICORE
 create tablespace ZEI_QDATA
 datafile 'ZEI_QDATA.dbf'
 size 10M
+extent management local
 offline
 
 alter tablespace ZEI_QDATA online;
 
 alter user ZEICORE quota 2M on ZEI_QDATA;
+
 
 
 
