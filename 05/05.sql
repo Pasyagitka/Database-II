@@ -2,6 +2,8 @@
 select FILE_NAME, TABLESPACE_NAME FROM DBA_DATA_FILES;
 select FILE_NAME, TABLESPACE_NAME FROM DBA_TEMP_FILES;
 
+show parameter control;
+
 --2.Создайте табличное пространство с именем XXX_QDATA (10m). При создании установите его в состояние offline. Затем переведите табличное пространство в состояние online. Выделите пользователю XXX квоту 2m в пространстве XXX_QDATA. 
 --(05_ZEI) От имени XXX в  пространстве XXX_T1создайте таблицу из двух столбцов, один из которых будет являться первичным ключом. В таблицу добавьте 3 строки.
 drop tablespace ZEI_QDATA including contents;
@@ -99,11 +101,12 @@ select * from v$controlfile;
 
 --20.Получите и исследуйте содержимое управляющего файла. Поясните известные вам параметры в файле.
 show parameter control;
-select type, record_size, records_total from v$controlfile_record_section;
+select * from v$controlfile_record_section;
 
 
 --21.Определите местоположение файла параметров инстанса. Убедитесь в наличии этого файла. 
 --C:\Oracle_Home\database\SPFILEORCL.ora
+--select * from v$parameter; содержимое
 
 --22.Сформируйте PFILE с именем XXX_PFILE.ORA. Исследуйте его содержимое. Поясните известные вам параметры в файле.
 --create pfile = 'ZEI_PFILE.ORA' from spfile; sysdba
