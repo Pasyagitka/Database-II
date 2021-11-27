@@ -5,7 +5,7 @@
 --sqlplus, system, password
 --select name from v$parameter
 
---3.Соединитесь при помощи sqlplus с подключаемой базой данных как пользователь SYSTEM, 
+--3.Соединитесь при помощи sqlplus с подключаемой базой данных как пользователь SYSTEM,         /nolog
 --получите список табличных пространств, файлов табличных пространств, ролей и пользователей.
 --basic: connect system/password@//localhost:1521/zei_pdb
 --connect system/password@WIN-VIVA74K8RUI:1521/zei_pdb
@@ -17,9 +17,7 @@ select username from dba_users;
 
 --4.Ознакомьтесь с параметрами в HKEY_LOCAL_MACHINE/SOFTWARE/ORACLE на вашем компьютере.
 
-
 --5.Запустите утилиту Oracle Net Manager и подготовьте строку подключения с именем имя_вашего_пользователя_SID, где SID – идентификатор подключаемой базы данных. 
-
 
 --6.Подключитесь с помощью sqlplus под собственным пользователем и с применением подготовленной строки подключения. 
 --connect system@zei_pdb
