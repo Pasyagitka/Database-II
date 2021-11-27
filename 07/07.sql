@@ -8,10 +8,14 @@ select name, description from v$bgprocess where paddr != hextoraw('00');
 show parameter db_writer_processes; 
 
 --4.Получите перечень текущих соединений с экземпляром.
-select * from v$session;
-
 --5.Определите режимы этих соединений.
-select username, server from v$session;
+--9.Получите перечень текущих соединений с инстансом. (dedicated, shared). 
+select username, server from v$session where username is not null;
+select * from v$session;
+select * from v$process;
+select v$session.username, v$session.server, v$process.pname, v$process.program 
+from v$session join v$process on v$session.paddr = v$process.addr
+where v$session.username is not null;
 
 --6.Определите сервисы (точки подключения экземпляра).
 select * from v$services;  
@@ -22,13 +26,8 @@ show parameter dispatcher;
 --8.Укажите в списке Windows-сервисов сервис, реализующий процесс LISTENER.
 --OracleOraDB19Home1TNSListener
 
---9.Получите перечень текущих соединений с инстансом. (dedicated, shared). 
-select username, server from v$session;
-
 --10.Продемонстрируйте и поясните содержимое файла LISTENER.ORA. 
---"C:\Oracle_Home\network\admin\listener.ora"
---конфигурационный файл программы listener, считывается при старте listener
---указывает хост, порт, по которым подключаемся
+--"C:\Oracle_Home\network\admin\listener.ora" --конфигурационный файл программы listener, считывается при старте listener (указывает хост, порт, по которым подключаемся)
 
 --11.Запустите утилиту lsnrctl и поясните ее основные команды. 
 --start
@@ -44,3 +43,5 @@ select username, server from v$session;
 
 --12.Получите список служб инстанса, обслуживаемых процессом LISTENER. 
 --lsnrctl - services
+
+select pname, program from v$process where background is null order by pname;
