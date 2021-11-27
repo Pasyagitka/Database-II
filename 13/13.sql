@@ -19,6 +19,57 @@ begin
 end;
 
 
+--факультета нет - показать сообщение
+--есть - удалить, кафедры переместить
+declare procedure delete_fac(fcode faculty.faculty%type) 
+is
+    cursor curs_1 is select * from faculty where faculty = fcode;
+    m_faculty zei.faculty%rowtype;
+begin
+    open curs_1;
+    loop
+        fetch curs_1 into m_faculty;
+        exit when curs_1%notfound;
+        dbms_output.put_line(m_faculty.faculty);
+    if (curs_1%rowcount = 0) then dbms_output.put_line('Такого факультета нет'); end if;
+    end loop;
+    close curs_1;
+end;
+begin
+  delete_fac('ЛХФ1');
+end;
+
+
+
+--1.Разработайте локальную процедуру  GET_TEACHERS (PCODE TEACHER.PULPIT%TYPE) 
+--Процедура должна выводить список преподавателей из таблицы TEACHER (в стандартный серверный вывод), работающих на кафедре заданной кодом в параметре. Разработайте анонимный блок и продемонстрируйте выполнение процедуры.
+select * from faculty;
+select * from pulpit;
+declare procedure get_f(pcode faculty.faculty%type) 
+is
+    fcount number;
+begin
+    select count(*) into fcount from faculty where faculty = pcode;
+
+    if (fcount = 0) then dbms_output.put_line('Такого факультета нет');  end if;
+  
+        begin
+        update pulpit set faculty = 'ТОВ' where pulpit.faculty = pcode;
+            delete from faculty where faculty = pcode;    
+        end;
+end;
+begin
+  get_f('ЛХФ');
+end;
+
+
+
+
+
+
+
+
+
 --2-3.Разработайте локальную функцию GET_NUM_TEACHERS (PCODE TEACHER.PULPIT%TYPE) RETURN NUMBER
 --Функция должна выводить количество преподавателей из таблицы TEACHER, работающих на кафедре заданной кодом в параметре. Разработайте анонимный блок и продемонстрируйте выполнение процедуры.
 declare function get_num_teachers(pcode teacher.pulpit%type) return number
@@ -176,4 +227,6 @@ begin
     dbms_output.put_line('Количество преподавателей на факультете ЛХФ: ' || teachers.get_num_teachers('ЛХФ'));
     dbms_output.put_line('Количество предметов на кафедре ИСиТ: '|| teachers.get_num_subjects('ПОиСОИ'));
 end;
+    
+    
     
