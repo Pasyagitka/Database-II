@@ -1,3 +1,4 @@
+
 drop table Table18;
 create table Table18(id number, field nvarchar2(30), datefield date);
 
@@ -55,7 +56,7 @@ FROM "EXT_TABLE18"
 WHERE to_char(to_date(DATEFIELD, 'yyyy-mm-dd'), 'mm.yyyy') = to_char(sysdate, 'mm.yyyy');
 
 DROP TABLE "EXT_TABLE18"
-
+select * from table18;
 
 --Выгрузить результаты любого SELECT-запроса во внешний файл любым способом.
 create or replace procedure to_csv as
