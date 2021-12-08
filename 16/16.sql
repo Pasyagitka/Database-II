@@ -164,3 +164,6 @@ select * from user_objects;
 select * from user_part_tables where table_name in('T_HASH', 'T_INTERVAL', 'T_LIST', 'T_RANGE');
 select * from user_tables where table_name in('T_HASH', 'T_INTERVAL', 'T_LIST', 'T_RANGE');
 select * from user_tab_partitions where table_name in('T_HASH', 'T_INTERVAL', 'T_LIST', 'T_RANGE');
+
+
+
