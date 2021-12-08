@@ -129,7 +129,7 @@ begin
     insert into Table15 values(:new.id, :new.field);
 end;
 
-insert into Table15View values(1, '1');
+insert into Table15View values(13, '13');
 select * from "AUDIT";
 rollback;
 
